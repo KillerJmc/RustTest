@@ -7,6 +7,7 @@ pub fn guess_start() {
     println!("猜数游戏");
 
     // 不可修改的变量
+    // ::表示是rand命名空间下的函数
     let res = rand::thread_rng().gen_range(1..101);
 
     loop {
