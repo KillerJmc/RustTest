@@ -1,4 +1,4 @@
-pub fn loop_test() {
+fn main() {
     // 判断
     let n = 5;
     if n > 3 {

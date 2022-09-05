@@ -1,4 +1,4 @@
-pub fn tuple() {
+fn main() {
     let tuple = (500, 60.4, 1);
     println!("({}, {}, {})", tuple.0, tuple.1, tuple.2);
 

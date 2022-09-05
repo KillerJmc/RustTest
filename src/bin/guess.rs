@@ -2,7 +2,7 @@ use std::io; // prelude
 use rand::Rng; // trait 接口
 use std::cmp::Ordering;
 
-pub fn guess_start() {
+fn main() {
     // !表示为宏定义
     println!("猜数游戏");
 

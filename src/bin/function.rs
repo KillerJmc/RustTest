@@ -1,4 +1,4 @@
-fn test() {
+fn main() {
     println!("函数返回：{}", f(5));
 }
 
