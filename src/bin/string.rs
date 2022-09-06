@@ -1,9 +1,9 @@
 fn main() {
     // 右边是个字符串常量值，存在预读文本中，只能通过引用标识
     // 如果写str的话，会导致它尝试在栈上创建字符串，但因为字符串长度未知，所以不成立
-    let s: &str = "111";
+    // 'static表示它的生命周期是全局的，贯穿整个程序的执行
+    let s: &'static str = "111";
     println!("{}", s);
-
 
     let s: String = "666".to_string();
     // 签名：fn deref(&self) -> &str
