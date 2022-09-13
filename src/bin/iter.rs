@@ -3,10 +3,17 @@ fn main() {
     for i in 0..list.size() {
         println!("{}", list.get(i).unwrap());
     }
+
+    println!("--------------------------");
+
+    // move
+    for t in list {
+        println!("{}", t);
+    }
 }
 
 /// 结点
-struct Node<T> {
+struct Node<T: Copy> {
     /// 储存的值
     value: Option<T>,
     /// 下一个结点 <br>
@@ -15,14 +22,18 @@ struct Node<T> {
 }
 
 /// 列表
-struct List<T> {
+struct List<T: Copy> {
     /// 列表头节点（不储存值）
     head: Box<Node<T>>,
+
     /// 列表长度
-    size: u32
+    size: u32,
+
+    /// 内置迭代器
+    iter: SimpleIter
 }
 
-impl<T> List<T> {
+impl<T: Copy> List<T> {
     /// 从迭代器创建实例
     fn of(objs: impl Iterator<Item = T>) -> List<T> {
         let mut instance = Self::new();
@@ -43,7 +54,8 @@ impl<T> List<T> {
 
         List {
             head,
-            size: 0
+            size: 0,
+            iter: SimpleIter::new()
         }
     }
 
@@ -76,8 +88,51 @@ impl<T> List<T> {
         n.unwrap().value.as_ref()
     }
 
+    // 获取并转移所有权
+    fn get_and_move(&self, mut idx: u32) -> Option<T> {
+        let mut n = self.head.next.as_ref();
+        while idx > 0 {
+            if n.is_none() {
+                return None
+            }
+            n = n.unwrap().next.as_ref();
+            idx -= 1;
+        }
+        n.unwrap().value
+    }
+
     /// 获取列表长度
     fn size(&self) -> u32 {
         self.size
     }
 }
+
+// IntoIter迭代器
+impl<T: Copy> Iterator for List<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.iter.curr == self.size() {
+            self.iter = SimpleIter::new();
+            return None
+        }
+        let res = self.get_and_move(self.iter.curr);
+        self.iter.curr += 1;
+        res
+    }
+}
+
+/// 简单迭代器
+struct SimpleIter {
+    curr: u32
+}
+
+impl SimpleIter {
+    fn new() -> Self {
+        SimpleIter {
+            curr: 0
+        }
+    }
+}
+
+
