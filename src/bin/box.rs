@@ -1,15 +1,18 @@
+use std::borrow::Borrow;
 use std::ops::Deref;
+use jmc_tools::console::new_line;
 
 fn main() {
     // box是个智能指针，指向堆内存，没有性能开销
     // rust默认把对象创建在栈中
     let i = Box::new(3);
+
     // 相当于 *i.deref()，即会自动调用i的deref方法，然后才用*取值
     let deref_i = *i;
     println!("{}", i);
     println!("{}", deref_i);
 
-    println!("------------------------------");
+    new_line();
 
     let s = Box::new("666".to_string());
     println!("{}", s);
@@ -18,13 +21,13 @@ fn main() {
     // 报错：在*s已经被移动了！
     // println!("{}", s);
 
-    println!("------------------------------");
+    new_line();
 
     let j = MyBox::new(4);
     let deref_j = *j;
     println!("{:?}", j);
     println!("{}", deref_j);
-    println!("------------------------------");
+    new_line();
 }
 
 /// 自定义Box <br>
