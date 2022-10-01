@@ -1,3 +1,5 @@
+use std::ffi::CStr;
+use std::os::raw::c_char;
 use std::ptr::null;
 
 extern "C" {
@@ -29,24 +31,45 @@ fn main() {
 ///     print("666");
 /// }
 /// ```
-/// 4. 在Ubuntu里面输入（MSVC太麻烦不采用）
-/// ```
-/// #在target文件夹中生成.a动态库文件
-/// cargo build
-/// gcc -o main main.c librust2c.a
-/// #函数成功被调用，但print函数打印都会乱码，现在还无法解决
-/// ./main
-/// ```
+/// 4. 运行
+///     + Ubuntu
+///     ```
+///     // 在target文件夹中生成.a动态库文件
+///     cargo build
+///
+///     // 编译
+///     gcc -o main main.c librust2c.a
+///
+///     // 运行
+///     ./main
+///     ```
+///     + MSVC
+///     ```
+///     :: 在target文件夹中生成.a动态库文件
+///     cargo build
+///
+///     :: 编译生成汇编文件
+///     cl /c main.c
+///
+///     :: 与Rust动态库链接
+///     link main.obj -libpath .\rust2c.lib -libpath wsock32.lib -libpath ws2_32.lib -libpath advapi32.lib -libpath Userenv.lib -libpath Bcrypt.lib
+///
+///     :: 运行
+///     main.exe
+///     ```
 #[no_mangle]
-pub extern "C" fn print(s: *const char) {
+pub extern "C" fn print(s: *const c_char) {
     // 检查指针是否为null
     if s == null() {
         eprintln!("s is a nullptr!");
         return
     }
 
-    unsafe {
-        // 打印
-        println!("Rust println: {}", (*s).to_string());
-    }
+    // 把const char *转换成&str
+    let res = unsafe {
+        CStr::from_ptr(s).to_str().unwrap()
+    };
+
+    // 打印
+    println!("Rust println: {}", res);
 }
