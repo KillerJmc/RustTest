@@ -58,7 +58,7 @@ fn main() {
 ///     main.exe
 ///     ```
 #[no_mangle]
-pub extern "C" fn print(s: *const c_char) {
+pub unsafe extern "C" fn print(s: *const c_char) {
     // 检查指针是否为null
     if s == null() {
         eprintln!("s is a nullptr!");
@@ -66,9 +66,7 @@ pub extern "C" fn print(s: *const c_char) {
     }
 
     // 把const char *转换成&str
-    let res = unsafe {
-        CStr::from_ptr(s).to_str().unwrap()
-    };
+    let res = CStr::from_ptr(s).to_str().unwrap();
 
     // 打印
     println!("Rust println: {}", res);

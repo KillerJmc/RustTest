@@ -12,7 +12,9 @@ fn main() {
 fn calc_sum() {
     let v = vec![1, 2, 3];
     let res = sum(&v, |t| *t);
+    let res2 = sum2(&v, |t| *t);
     println!("sum = {}", res);
+    println!("sum = {}", res2);
 }
 
 // Fn是个官方的接口，写法是个新语法（现在只在Fn系列函数里有效）
@@ -22,6 +24,15 @@ fn calc_sum() {
 // FnOnce同上，但执行一次后会被Move，不能再使用
 // FnMut可以从上文中捕获可修改的变量
 fn sum<T, F: Fn(&T) -> i32>(list: &Vec<T>, to_i32: F) -> i32 {
+    let mut res = 0;
+    for t in list {
+        res += to_i32(t);
+    }
+    res
+}
+
+// 可以直接使用函数指针来简化这个过程
+fn sum2<T>(list: &Vec<T>, to_i32: fn(&T) -> i32) -> i32 {
     let mut res = 0;
     for t in list {
         res += to_i32(t);

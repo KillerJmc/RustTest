@@ -4,6 +4,7 @@ fn main() {
     let r1 = &num as *const i32;
     let r2 = &mut num as *mut i32;
 
+    // unsafe块定义中的指针不会被Rust编译器释放
     unsafe {
         // 对其解引用必须在unsafe里面进行
         println!("r1 = {}", *r1);

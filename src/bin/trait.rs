@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter};
+
 fn main() {
     let cat = Cat {
         name: "猫".to_string()
@@ -80,5 +82,19 @@ impl Animal for Dog {
         println!("{}：正在吃东西", self.name);
     }
 }
+
+trait A {}
+trait B {}
+
+// trait的继承
+trait C : A + B {}
+
+struct D {}
+
+// 对C进行实现时，必须对A，B也进行实现
+impl A for D {}
+impl B for D {}
+impl C for D {}
+
 
 
