@@ -8,6 +8,10 @@ fn main() {
     // 宏定义版println，简单
     my_println!(1, 2, 3);
     my_println!();
+
+    // 自制min宏
+    let res = min!(5, 3, 4, 1, 2);
+    println!("min = {}", res);
 }
 
 
@@ -48,6 +52,21 @@ macro_rules! my_println {
         // 展开语法：$(...)*
         // ...: 表示语句
         $(println!("{}", $x);)*
+    };
+}
+
+#[macro_export]
+macro_rules! min {
+    ($n: expr) => { $n };
+    // tt：token tree，可以匹配非表达式，比如+
+    // 这里使用多次重复：匹配举例：
+    // min!(4, 1, 3, 2)
+    // -> min!(4, min!(1, 3, 2))
+    // -> min!(4, min!(1, min!(3, 2)))
+    // -> min!(4, min!(1, std::cmp::min(3, 2)))
+    // 从以上可以看出重复语法不断匹配tt类型，直接把数字和逗号都匹配了
+    ($n: expr, $($tail: tt)+) => {
+        std::cmp::min($n, min!($($tail)*))
     };
 }
 
