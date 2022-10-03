@@ -1,6 +1,7 @@
 use std::fmt::{Display, Formatter};
 
 fn main() {
+    // 构造逆序链表节点Vec
     let mut v = (1..=10)
         .rev() // 为了之后pop顺利，逆转一下
         .map(Node::new)
