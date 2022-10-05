@@ -1,4 +1,5 @@
 use std::ops::Index;
+use jmc_tools::console::new_line;
 
 fn main() {
     // 右边是个字符串常量值，存在预读文本中，只能通过引用标识
@@ -33,6 +34,8 @@ fn main() {
     let s = format!("{}-{}-{}", "a", s2, s3);
     println!("{}", s);
 
+    new_line();
+
     // 字符串的索引（只能支持字节遍历的索引）
     let s = "abcdefg";
     println!("{}", s.index(3..4));
@@ -40,4 +43,15 @@ fn main() {
     println!("{}", s.index(4..5));
     // 如果用多字节文字必须计算好字节，否则会报错
     println!("{}", "你好".index(0..3));
+    // 使用字符流获取
+    println!("{}", "你好".chars().collect::<Vec<char>>()[1]);
+
+    new_line();
+
+    // 获取字符串长度
+    let s = "你好啊渣渣666";
+    // 字节长度
+    println!("{}", s.len());
+    // 字符长度
+    println!("{}", s.chars().count());
 }
