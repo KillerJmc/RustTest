@@ -1,3 +1,5 @@
+use std::ops::Index;
+
 fn main() {
     // 右边是个字符串常量值，存在预读文本中，只能通过引用标识
     // 如果写str的话，会导致它尝试在栈上创建字符串，但因为字符串长度未知，所以不成立
@@ -30,4 +32,12 @@ fn main() {
     // 简单format（s已经被移动了，不存在了）
     let s = format!("{}-{}-{}", "a", s2, s3);
     println!("{}", s);
+
+    // 字符串的索引（只能支持字节遍历的索引）
+    let s = "abcdefg";
+    println!("{}", s.index(3..4));
+    let s = s.to_string();
+    println!("{}", s.index(4..5));
+    // 如果用多字节文字必须计算好字节，否则会报错
+    println!("{}", "你好".index(0..3));
 }
