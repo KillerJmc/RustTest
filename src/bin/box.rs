@@ -1,6 +1,5 @@
-use std::borrow::Borrow;
 use std::ops::Deref;
-use jmc_tools::console::new_line;
+use jmc_tools::Console;
 
 fn main() {
     // box是个智能指针，指向堆内存，没有性能开销
@@ -12,7 +11,7 @@ fn main() {
     println!("{}", i);
     println!("{}", deref_i);
 
-    new_line();
+    Console::new_line();
 
     let s = Box::new("666".to_string());
     println!("{}", s);
@@ -21,13 +20,13 @@ fn main() {
     // 报错：在*s已经被移动了！
     // println!("{}", s);
 
-    new_line();
+    Console::new_line();
 
     let j = MyBox::new(4);
     let deref_j = *j;
     println!("{:?}", j);
     println!("{}", deref_j);
-    new_line();
+    Console::new_line();
 }
 
 /// 自定义Box <br>

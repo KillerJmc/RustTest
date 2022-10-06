@@ -1,5 +1,4 @@
 use std::ops::Index;
-use jmc_tools::console::new_line;
 
 fn main() {
     // 右边是个字符串常量值，存在预读文本中，只能通过引用标识
